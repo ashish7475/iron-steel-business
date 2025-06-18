@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nav Durga Steel - Receipt Management</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏭</text></svg>">
+    <link rel="shortcut icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏭</text></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏭</text></svg>">
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Login Page -->
+    <div id="loginPage" class="login-container">
+        <div class="login-card">
+            <div class="text-center mb-4">
+                <i class="fas fa-industry fa-3x text-primary"></i>
+                <h2 class="mt-3">Nav Durga Steel</h2>
+                <p class="text-muted">Receipt Management System</p>
+            </div>
+            <form id="loginForm">
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" class="form-control" id="username" required>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">
+                    <i class="fas fa-sign-in-alt me-2"></i>Login
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main Application -->
+    <div id="mainApp" class="d-none">
+        <!-- Navigation -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container">
+                <a class="navbar-brand" href="#">
+                    <i class="fas fa-industry me-2"></i>
+                    Nav Durga Steel
+                </a>
+                <div class="navbar-nav ms-auto">
+                    <span class="navbar-text me-3">
+                        Welcome, <span id="userDisplay"></span>
+                    </span>
+                    <button class="btn btn-outline-light btn-sm" onclick="logout()">
+                        <i class="fas fa-sign-out-alt me-2"></i>Logout
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Tab Navigation -->
+        <div class="container mt-4">
+            <ul class="nav nav-tabs" id="mainTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="dashboard-tab" data-bs-toggle="tab" data-bs-target="#dashboard" type="button" role="tab">
+                        <i class="fas fa-chart-bar me-2"></i>Dashboard
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="receipts-tab" data-bs-toggle="tab" data-bs-target="#receipts" type="button" role="tab">
+                        <i class="fas fa-receipt me-2"></i>Receipts
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="settings-tab" data-bs-toggle="tab" data-bs-target="#settings" type="button" role="tab">
+                        <i class="fas fa-cog me-2"></i>Settings
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="history-tab" data-bs-toggle="tab" data-bs-target="#history" type="button" role="tab">
+                        <i class="fas fa-history me-2"></i>History
+                    </button>
+                </li>
+            </ul>
+
+            <!-- Tab Content -->
+            <div class="tab-content" id="mainTabContent">
+                <!-- Dashboard Tab -->
+                <div class="tab-pane fade show active" id="dashboard" role="tabpanel">
+                    <!-- Dashboard Sub-tabs -->
+                    <ul class="nav nav-pills mt-4" id="dashboardSubTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="daily-tab" data-bs-toggle="pill" data-bs-target="#daily" type="button" role="tab">
+                                <i class="fas fa-calendar-day me-2"></i>Daily
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="monthly-tab" data-bs-toggle="pill" data-bs-target="#monthly" type="button" role="tab">
+                                <i class="fas fa-calendar-alt me-2"></i>Monthly
+                            </button>
+                        </li>
+                    </ul>
+
+                    <!-- Dashboard Sub-content -->
+                    <div class="tab-content" id="dashboardSubContent">
+                        <!-- Daily Dashboard -->
+                        <div class="tab-pane fade show active" id="daily" role="tabpanel">
+                            <div class="row mt-4">
+                                <div class="col-md-3">
+                                    <div class="summary-card bg-primary text-white">
+                                        <h6>Today's Receipts</h6>
+                                        <h3 id="totalReceipts">0</h3>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="summary-card bg-success text-white">
+                                        <h6>Total Weight</h6>
+                                        <h3 id="totalWeightToday">0</h3>
+                                        <small>kg</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="summary-card bg-warning text-white">
+                                        <h6>Labor Cost</h6>
+                                        <h3 id="totalLaborCost">₹0</h3>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="summary-card bg-info text-white">
+                                        <h6>Date</h6>
+                                        <h3 id="currentDate">-</h3>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card mt-4">
+                                <div class="card-header bg-secondary text-white">
+                                    <h5><i class="fas fa-list me-2"></i>Today's Receipts</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped">
+                                            <thead class="table-dark">
+                                                <tr>
+                                                    <th>Time</th>
+                                                    <th>Customer</th>
+                                                    <th>Items</th>
+                                                    <th>Total Weight</th>
+                                                    <th>Labor Cost</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="dashboardTableBody">
+                                                <!-- Dashboard table content -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Monthly Dashboard -->
+                        <div class="tab-pane fade" id="monthly" role="tabpanel">
+                            <div class="row mt-4">
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label for="monthYear" class="form-label">Select Month & Year</label>
+                                        <input type="month" class="form-control" id="monthYear">
+                                    </div>
+                                    <button class="btn btn-primary" onclick="loadMonthlySummary()">
+                                        <i class="fas fa-search me-2"></i>Load Monthly Data
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="row mt-4">
+                                <div class="col-md-3">
+                                    <div class="summary-card bg-primary text-white">
+                                        <h6>Monthly Receipts</h6>
+                                        <h3 id="monthlyTotalReceipts">0</h3>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="summary-card bg-success text-white">
+                                        <h6>Total Weight</h6>
+                                        <h3 id="monthlyTotalWeight">0</h3>
+                                        <small>kg</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="summary-card bg-warning text-white">
+                                        <h6>Labor Cost</h6>
+                                        <h3 id="monthlyTotalLaborCost">₹0</h3>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="summary-card bg-info text-white">
+                                        <h6>Month</h6>
+                                        <h3 id="currentMonth">-</h3>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card mt-4">
+                                <div class="card-header bg-dark text-white">
+                                    <h5><i class="fas fa-chart-line me-2"></i>Daily Breakdown</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped">
+                                            <thead class="table-dark">
+                                                <tr>
+                                                    <th>Date</th>
+                                                    <th>Receipts</th>
+                                                    <th>Total Weight</th>
+                                                    <th>Labor Cost</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="monthlyBreakdownBody">
+                                                <!-- Monthly breakdown table content -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Receipts Tab -->
+                <div class="tab-pane fade" id="receipts" role="tabpanel">
+                    <div class="card mt-4">
+                        <div class="card-header bg-success text-white">
+                            <h5><i class="fas fa-plus me-2"></i>Add New Receipt</h5>
+                        </div>
+                        <div class="card-body">
+                            <form id="receiptForm">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="customerName" class="form-label">Customer Name</label>
+                                            <input type="text" class="form-control" id="customerName" placeholder="Customer name (optional)">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Date</label>
+                                            <input type="text" class="form-control" value="Today's Date (Auto)" readonly style="background-color: #f8f9fa;">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="notes" class="form-label">Notes</label>
+                                    <textarea class="form-control" id="notes" rows="2" placeholder="Additional notes (optional)"></textarea>
+                                </div>
+
+                                <div class="card mb-3">
+                                    <div class="card-header">
+                                        <h6 class="mb-0">Items</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div id="itemsContainer">
+                                            <!-- Items will be added here -->
+                                        </div>
+                                        <button type="button" class="btn btn-outline-primary btn-sm" onclick="addItemRow()">
+                                            <i class="fas fa-plus me-2"></i>Add Item
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="alert alert-info">
+                                            <strong>Total Weight:</strong> <span id="formTotalWeight">0</span> kg
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="alert alert-warning">
+                                            <strong>Total Labor Cost:</strong> ₹<span id="formTotalLaborCost">0</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="alert alert-success">
+                                            <strong>Rate:</strong> ₹<span id="currentRateDisplay">0</span> per kg
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn btn-success">
+                                    <i class="fas fa-save me-2"></i>Save Receipt
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Settings Tab -->
+                <div class="tab-pane fade" id="settings" role="tabpanel">
+                    <div class="card mt-4">
+                        <div class="card-header bg-primary text-white">
+                            <h5><i class="fas fa-cog me-2"></i>Labor Rate Settings</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="laborRate" class="form-label">Labor Rate per kg (₹)</label>
+                                        <input type="number" class="form-control" id="laborRate" step="0.01" placeholder="Enter labor rate per kg">
+                                    </div>
+                                    <button class="btn btn-primary" onclick="updateLaborRate()">
+                                        <i class="fas fa-save me-2"></i>Update Rate
+                                    </button>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="alert alert-info">
+                                        <strong>Current Rate:</strong> ₹<span id="currentRate">0</span> per kg
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Password Update Form -->
+                    <div class="card mt-4">
+                        <div class="card-header bg-warning text-dark">
+                            <h5><i class="fas fa-key me-2"></i>Change Password</h5>
+                        </div>
+                        <div class="card-body">
+                            <form id="passwordForm">
+                                <div class="mb-3">
+                                    <label for="currentPassword" class="form-label">Current Password</label>
+                                    <input type="password" class="form-control" id="currentPassword" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="newPassword" class="form-label">New Password</label>
+                                    <input type="password" class="form-control" id="newPassword" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="confirmPassword" class="form-label">Confirm New Password</label>
+                                    <input type="password" class="form-control" id="confirmPassword" required>
+                                </div>
+                                <button type="submit" class="btn btn-warning">
+                                    <i class="fas fa-key me-2"></i>Update Password
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- History Tab -->
+                <div class="tab-pane fade" id="history" role="tabpanel">
+                    <div class="card mt-4">
+                        <div class="card-header bg-dark text-white">
+                            <h5><i class="fas fa-history me-2"></i>Historical Data</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <div class="mb-3">
+                                        <label for="startDate" class="form-label">Start Date</label>
+                                        <input type="date" class="form-control" id="startDate">
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="mb-3">
+                                        <label for="endDate" class="form-label">End Date</label>
+                                        <input type="date" class="form-control" id="endDate">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="mb-3">
+                                        <label for="customerFilter" class="form-label">Customer Filter</label>
+                                        <input type="text" class="form-control" id="customerFilter" placeholder="Search by customer name">
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="mb-3">
+                                        <label for="sortBy" class="form-label">Sort By</label>
+                                        <select class="form-control" id="sortBy">
+                                            <option value="date">Date</option>
+                                            <option value="labor_cost">Labor Cost</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="mb-3">
+                                        <label for="sortOrder" class="form-label">Order</label>
+                                        <select class="form-control" id="sortOrder">
+                                            <option value="desc">Descending</option>
+                                            <option value="asc">Ascending</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-1">
+                                    <div class="mb-3">
+                                        <label class="form-label">&nbsp;</label>
+                                        <button class="btn btn-primary d-block w-100" onclick="loadHistory()">
+                                            <i class="fas fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <button class="btn btn-success" onclick="exportFilteredData()">
+                                        <i class="fas fa-file-excel me-2"></i>Export Filtered Data
+                                    </button>
+                                </div>
+                                <div class="col-md-6">
+                                    <button class="btn btn-info" onclick="exportAllData()">
+                                        <i class="fas fa-file-excel me-2"></i>Export All Data
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="historyContent" class="mt-3">
+                                <!-- Historical data will be displayed here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirm Delete</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete this receipt?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" onclick="confirmDelete()">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Receipt Details Modal -->
+    <div class="modal fade" id="receiptModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Receipt Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="receiptModalBody">
+                    <!-- Receipt details will be displayed here -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="printReceipt()">
+                        <i class="fas fa-print me-2"></i>Print
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html> 

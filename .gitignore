@@ -1,0 +1,41 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+
+# Virtual environments
+venv/
+backend/venv/
+
+# SQLite database
+*.db
+backend/instance/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE/project files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Node/npm (if ever used)
+node_modules/
+
+# Logs
+*.log
+
+# Environment variables
+.env
+
+# Build
+build/
+backend/build/
+
+# Misc
+*.bak
+*.swp 
