@@ -175,4 +175,16 @@ git push -u origin main
 cd frontend
 git remote add origin https://github.com/ashish7475/iron-steel-frontend.git
 git push -u origin main
-``` 
+```
+
+Repository (GitHub):
+├── backend/          ← Render uses this as root
+│   ├── app.py
+│   ├── requirements.txt
+│   ├── models.py
+│   └── ...
+├── frontend/         ← GitHub Pages uses this
+│   ├── index.html
+│   ├── styles.css
+│   └── script.js
+└── .gitignore 

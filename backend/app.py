@@ -4,7 +4,7 @@ from flask_cors import CORS
 import os
 from datetime import timedelta
 from dotenv import load_dotenv
-from models import init_db
+from models import db, init_db
 from controllers import AuthController, LaborRateController, ReceiptController, SummaryController
 
 # Load environment variables
@@ -20,6 +20,7 @@ app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY', 'jwt-secret-key-chang
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=24)
 
 # Initialize extensions
+db.init_app(app)
 init_db(app)
 jwt = JWTManager(app)
 CORS(app)  # Enable CORS for all routes

@@ -36,8 +36,6 @@ class ReceiptItem(db.Model):
 
 def init_db(app):
     """Initialize database and create default data"""
-    db.init_app(app)
-    
     with app.app_context():
         db.create_all()
         
