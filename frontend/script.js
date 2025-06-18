@@ -7,7 +7,7 @@ let currentLaborRate = 0;
 let receiptsToDelete = null;
 
 // API Base URL
-const API_BASE_URL = 'http://localhost:5000/api';
+const API_BASE_URL = 'https://iron-steel-business.onrender.com/api';
 
 // Initialize application
 document.addEventListener('DOMContentLoaded', function() {

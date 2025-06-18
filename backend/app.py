@@ -5,7 +5,7 @@ import os
 from datetime import timedelta
 from dotenv import load_dotenv
 from models import db, init_db
-from controllers import AuthController, LaborRateController, ReceiptController, SummaryController
+from controllers import AuthController, LaborRateController, ReceiptController, SummaryController, DatabaseController
 
 # Load environment variables
 load_dotenv()
@@ -65,6 +65,15 @@ def get_monthly_summary():
 @app.route('/api/export', methods=['GET'])
 def export_data():
     return SummaryController.export_data()
+
+# Database Management Routes (Admin only)
+@app.route('/api/admin/database-stats', methods=['GET'])
+def get_database_stats():
+    return DatabaseController.get_database_stats()
+
+@app.route('/api/admin/table-data', methods=['GET'])
+def get_table_data():
+    return DatabaseController.get_table_data()
 
 # Health check endpoint
 @app.route('/api/health', methods=['GET'])
